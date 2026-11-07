@@ -35,7 +35,7 @@ p, h1, h2, ul { margin: 0; }
 /* ---------- Opening envelope ---------- */
 /* The stage keeps the artwork's 941 x 1356 proportions and always fills the screen height; on a narrow phone the sides are cropped, on a
    wide screen it sits centred as a column. Only the top flap moves — it hinges at the top edge and the wax seal travels with it. */
-.opening { --ar: calc(941 / 1356); --stage-h: 100vh; --stage-w: calc(var(--stage-h) * var(--ar)); --view-w: min(100vw, var(--stage-w));
+.opening { --ar: calc(941 / 1356); --stage-h: 100vh; --stage-w: min(100vw, calc(var(--stage-h) * var(--ar))); --view-w: var(--stage-w);
   position: fixed; inset: 0; z-index: 50; background: #efe1c7; overflow: hidden;
   transition: opacity 1.1s ease .1s, visibility 0s linear 1.2s; }
 @supports (height: 100dvh) { .opening { --stage-h: 100dvh; } }
@@ -70,7 +70,7 @@ p, h1, h2, ul { margin: 0; }
 
 /* pale rose-white wash that carries the envelope into the invitation */
 .opening-wash { position: absolute; inset: 0; z-index: 8; opacity: 0; pointer-events: none;
-  background: radial-gradient(ellipse at 50% 40%, #fffaf5 0%, #f8ebe8 52%, #f3e2dd 100%); transition: opacity .75s ease 1.2s; }
+  background: radial-gradient(ellipse at 50% 40%, #fffdf8 0%, #f9f1e6 55%, #f4eadb 100%); transition: opacity .9s ease 1.1s; }
 
 .is-unfolding .open-seal { pointer-events: none; }
 .is-unfolding .seal { animation: none; opacity: .0; }
