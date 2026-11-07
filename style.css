@@ -210,11 +210,52 @@ p, h1, h2, ul { margin: 0; }
   .reveal { transform: none; }
 }
 
-/* family page: larger type so it holds a full screen */
-.family-page .family-line { font-size: calc(var(--u) * 3.8); line-height: 1.7; text-wrap: balance; }
-.family-page .address { font-size: calc(var(--u) * 4.6); margin-top: calc(var(--u) * 1.5); }
-.family-page .family-line--bride { margin-top: calc(var(--u) * 12); }
+/* ---------- Family page: arch frame ---------- */
+.family-page { position: relative; overflow: hidden; align-items: center; }
+.fp-leaves { position: absolute; left: 0; width: 100%; height: auto; pointer-events: none; opacity: .95; }
+.fp-leaves--top { top: 0; }
+.fp-leaves--bottom { bottom: 0; transform: scaleY(-1); }
+.family-page .family { width: 100%; padding: 0 calc(var(--u) * 8); }
+.arch { position: relative; width: 100%; margin: 0 auto; padding: calc(var(--u) * 34) calc(var(--u) * 3.5) calc(var(--u) * 22);
+  border: 1px solid rgba(184,154,94,.6); border-radius: calc(var(--u) * 42) calc(var(--u) * 42) 0 0;
+  background: rgba(250,244,230,.55); isolation: isolate; }
+.arch::before { content: ""; position: absolute; inset: calc(var(--u) * 2); z-index: -1; border: 1px solid rgba(184,154,94,.35);
+  border-radius: calc(var(--u) * 40) calc(var(--u) * 40) 0 0;
+  background: url('assets/art/lattice.svg') center top / calc(var(--u) * 15) calc(var(--u) * 15); opacity: .22;
+  -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent 96%); mask-image: linear-gradient(to bottom, #000 30%, transparent 96%); }
+.arch-crescent { position: absolute; top: calc(var(--u) * 12); left: 50%; width: calc(var(--u) * 15); margin-left: calc(var(--u) * -7.5); }
+.family-page .family-line { font-size: calc(var(--u) * 3.6); line-height: 1.7; text-wrap: balance; }
+.family-page .address { font-size: calc(var(--u) * 3.8); margin-top: calc(var(--u) * 1.5); }
+.arch-star { margin: calc(var(--u) * 12) 0 calc(var(--u) * 12); }
+.arch-star img { width: calc(var(--u) * 13); margin: 0 auto; opacity: .9; }
+.family-page .family-line--bride { margin-top: 0; }
 
-/* snappier reveals after the hero, and free the GPU layers once an element is shown */
-.page .reveal, .closing .reveal { transition-duration: .7s, .8s; }
-.reveal.is-visible { will-change: auto; }
+/* ---------- Date + venue pages: the frame fills the whole screen ---------- */
+.page > .panel { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; margin: 0 calc(var(--u) * 5); }
+.page:has(> .panel) { padding: calc(var(--u) * 5) 0; }
+.venue-art { padding: calc(var(--u) * 1.6); border-radius: calc(var(--u) * 28) calc(var(--u) * 28) 0 0; margin-top: calc(var(--u) * 9); }
+.venue-art img { aspect-ratio: 6 / 5; border-radius: calc(var(--u) * 26.4) calc(var(--u) * 26.4) 0 0; }
+.venue-panel .actions { margin-top: calc(var(--u) * 12); }
+.venue-panel .venue-name { margin-top: calc(var(--u) * 6); }
+
+.panel-crescent { width: calc(var(--u) * 13); margin: 0 auto calc(var(--u) * 5); }
+.panel-star { margin-top: calc(var(--u) * 9); }
+.panel-star img { width: calc(var(--u) * 11); margin: 0 auto; opacity: .85; }
+.date-panel .countdown { margin-top: calc(var(--u) * 9); }
+/* faint star lattice at the top and bottom of the framed pages */
+.page > .panel::after { content: ""; position: absolute; inset: calc(var(--u) * 2); z-index: 0; pointer-events: none; opacity: .16;
+  background: url('assets/art/lattice.svg') center / calc(var(--u) * 15) calc(var(--u) * 15);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, transparent 20%, transparent 74%, #000 100%); mask-image: linear-gradient(to bottom, #000 0, transparent 20%, transparent 74%, #000 100%); }
+.page > .panel > *:not(.corner) { position: relative; z-index: 1; }
+
+/* ---------- Closing page: bookends the hero ---------- */
+.closing { position: relative; overflow: hidden; padding: calc(var(--u) * 24) calc(var(--u) * 9) calc(var(--u) * 44); }
+.closing > .blessings, .closing > .divider, .closing > .quote, .closing > .regards, .closing > .families { position: relative; z-index: 1; }
+.closing-crescent { width: calc(var(--u) * 13); margin: 0 auto calc(var(--u) * 6); }
+.closing-aisle { position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--u) * 46); z-index: 0; pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 38%); mask-image: linear-gradient(to bottom, transparent, #000 38%); }
+.closing-aisle img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; filter: saturate(.8) sepia(.1); opacity: .95; }
+.closing .divider { margin-top: calc(var(--u) * 7); }
+.closing .quote { margin-top: calc(var(--u) * 6); }
+.closing .regards { margin-top: calc(var(--u) * 9); }
+.closing .divider--end { margin-top: calc(var(--u) * 7); }
