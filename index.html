@@ -42,29 +42,25 @@
 <body>
 
   <!-- ============ OPENING ENVELOPE ============ -->
-  <!-- Sequence: tap the wax seal -> the flap hinges open (its inner lining shows) -> the opening dissolves straight into the invitation hero.
-       Layers inside .env, bottom to top: interior -> pocket (envelope with the flap cut out) -> flap (front + lining + seal). -->
+  <!-- Full-screen envelope. Tap the wax seal -> the flap lifts toward the viewer with a warm shadow -> the seal fades into a pale wash
+       -> the wash dissolves into the hero, where the greenery, table and chandelier arrive one after another.
+       Layers inside .scene, bottom to top: interior -> pocket (envelope with the flap cut out) -> flap (carries the seal). -->
   <section class="opening" id="opening" aria-label="Invitation envelope">
     <div class="op-bg" aria-hidden="true"></div>
-    <p class="op-kicker" aria-hidden="true">The Nikkah of</p>
-    <p class="op-names" aria-hidden="true">Hatib <span>&amp;</span> Fidha</p>
-
-    <div class="env" id="env">
-      <div class="env-in" aria-hidden="true"></div>
-
-
-      <img class="env-pocket" src="assets/opening/envelope.webp" alt="" width="1217" height="1292" fetchpriority="high" decoding="async">
-
-      <div class="env-flap" id="flap">
-        <div class="flap-face flap-front"></div>
-        <div class="flap-face flap-back"><div class="flap-lining"></div></div>
-        <button type="button" class="open-seal" id="open-btn" aria-label="Open the Nikkah invitation">
-          <span class="seal" aria-hidden="true"><img src="assets/opening/seal.webp" alt="" width="560" height="558"></span>
-        </button>
+    <div class="op-stage">
+      <div class="scene" id="env">
+        <div class="env-in" aria-hidden="true"></div>
+        <img class="env-pocket" src="assets/opening/envelope.webp" alt="" width="1149" height="2181" fetchpriority="high" decoding="async">
+        <div class="env-flap" id="flap">
+          <div class="flap-face" aria-hidden="true"></div>
+          <button type="button" class="open-seal" id="open-btn" aria-label="Open the Nikkah invitation">
+            <span class="seal" aria-hidden="true"><img src="assets/opening/seal.webp" alt="" width="504" height="512"></span>
+          </button>
+        </div>
       </div>
+      <p class="seal-label" aria-hidden="true">Tap the seal to open</p>
     </div>
-
-    <p class="seal-label" aria-hidden="true">Tap the seal to open</p>
+    <div class="op-wash" aria-hidden="true"></div>
   </section>
 
   <!-- ============ INVITATION ============ -->
@@ -102,7 +98,7 @@
       </div>
 
       <div class="hero-table reveal reveal--soft" style="--d:.4s" aria-hidden="true">
-        <img src="assets/art/aisle.webp" alt="" width="1672" height="941" decoding="async">
+        <img src="assets/art/table.webp" alt="" width="1185" height="782" decoding="async">
       </div>
      </div>
 
@@ -111,7 +107,6 @@
 
     <!-- Family -->
     <section class="page family-page" aria-label="Families">
-      <img class="fp-leaves fp-leaves--top" src="assets/art/greenery-top.webp" alt="" width="1600" height="234" aria-hidden="true" loading="lazy" decoding="async">
       <div class="family reveal" style="--d:.05s">
         <div class="arch">
           <img class="arch-crescent" src="assets/art/crescent.svg" alt="" width="80" height="80" aria-hidden="true">
@@ -121,7 +116,6 @@
           <p class="family-line family-line--bride"><span class="rel">Fidha</span> is the beloved daughter of<br>Dr. S. V. Muhamed Shameer <span class="amp-s">&amp;</span> Shakira A. K.</p>
         </div>
       </div>
-      <img class="fp-leaves fp-leaves--bottom" src="assets/art/greenery-top.webp" alt="" width="1600" height="234" aria-hidden="true" loading="lazy" decoding="async">
     </section>
 
     <!-- Date + countdown -->
@@ -169,7 +163,6 @@
     <!-- Blessings -->
     <section class="closing" aria-labelledby="closing-heading">
       <h2 class="sr-only" id="closing-heading">Family blessings and closing</h2>
-      <img class="fp-leaves fp-leaves--top" src="assets/art/greenery-top.webp" alt="" width="1600" height="234" aria-hidden="true" loading="lazy" decoding="async">
       <img class="closing-crescent reveal" src="assets/art/crescent.svg" alt="" width="80" height="80" aria-hidden="true" loading="lazy">
 
       <!-- Edit the names in this list to update the family blessings. -->

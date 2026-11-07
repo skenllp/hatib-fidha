@@ -33,70 +33,60 @@ img { display: block; max-width: 100%; height: auto; }
 p, h1, h2, ul { margin: 0; }
 
 /* ---------- Opening envelope ---------- */
-/* Everything is sized from --W (the envelope width) so the envelope and seal stay in proportion on any screen.
-   The envelope artwork is 1217 x 1292; its flap tip sits at 50% / 53.2%. Only the flap moves. */
-.opening { --dvh: 1vh; --W: min(88vw, 440px, calc((var(--dvh) * 100 - 190px) * .84)); --H: calc(var(--W) * 1.0616);
-  position: fixed; inset: 0; z-index: 50; overflow: hidden; background: #f3e9d4;
-  transition: opacity 1.2s ease, visibility 0s linear 1.2s; }
+/* The envelope artwork (766 x 1454, flap tip at 49% / 52.4%) is scaled to fill a stage as tall as the screen and as wide as the invitation
+   column (max 480px), so the seal sits just above centre. On wide screens the leaf
+   watercolour shows either side of the stage. Only the flap moves. */
+.opening { --dvh: 1vh; --sw: min(100vw, 480px); --sh: calc(var(--dvh) * 100);
+  --env-h: max(var(--sh), calc(var(--sw) * 1.898)); --env-w: calc(var(--env-h) * .5268);
+  position: fixed; inset: 0; z-index: 50; overflow: hidden; background: #efe1c7; transition: opacity 1s ease, visibility 0s linear 1s; }
 @supports (height: 100dvh) { .opening { --dvh: 1dvh; } }
 .opening[hidden] { display: none; }
 .is-open .opening { opacity: 0; visibility: hidden; pointer-events: none; }
 
-/* leaf watercolour backdrop */
-.op-bg { position: absolute; inset: 0; background: #f6ecd6 url('assets/opening/wallpaper.webp') center / cover no-repeat; transition: opacity .9s ease; }
-.op-bg::after { content: ''; position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 50% 46%, rgba(255,250,238,.5) 0%, rgba(255,250,238,0) 62%), radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(120,98,60,.16) 100%); }
+.op-bg { position: absolute; inset: 0; background: #f3e8d0 url('assets/opening/wallpaper.webp') center / cover no-repeat; }
+.op-stage { position: absolute; top: 0; bottom: 0; left: 50%; width: var(--sw); margin-left: calc(var(--sw) / -2); overflow: hidden; background: #ece1cc; }
+@media (min-width: 520px) { .op-stage { box-shadow: 0 0 70px rgba(74,55,43,.22); } }
 
-/* heading above the envelope */
-.op-kicker, .op-names { position: absolute; left: 0; right: 0; text-align: center; margin: 0; pointer-events: none; transition: opacity .6s ease, transform .8s ease; }
-.op-kicker { top: calc(var(--dvh) * 50 - var(--H) / 2 + var(--dvh) * 7 - var(--W) * .30); font-family: var(--serif-head); font-size: clamp(.6rem, calc(var(--W) * .034), .8rem); letter-spacing: .38em; text-indent: .38em; text-transform: uppercase; color: var(--brown-soft); }
-.op-names { top: calc(var(--dvh) * 50 - var(--H) / 2 + var(--dvh) * 7 - var(--W) * .25); font-family: var(--serif-names); font-style: italic; font-weight: 500; font-size: calc(var(--W) * .115); line-height: 1.1; color: var(--brown); }
-.op-names span { color: var(--gold); font-style: normal; margin: 0 .08em; }
+.scene { position: absolute; width: var(--env-w); height: var(--env-h);
+  left: calc((var(--sw) - var(--env-w)) / 2); top: calc((var(--sh) - var(--env-h)) / 2); }
+.scene > * { position: absolute; }
+.env-in { inset: 0; background: linear-gradient(180deg, #d9ccb2 0%, #e6dbc4 45%, #ebe1cc 100%); }
+.env-pocket { inset: 0; width: 100%; height: 100%; object-fit: fill; pointer-events: none; user-select: none; -webkit-user-drag: none;
+  clip-path: polygon(0 27.5%, 49.23% 52.43%, 100% 27.3%, 100% 100%, 0 100%); }
 
-/* envelope */
-.env { position: absolute; left: 50%; width: var(--W); height: var(--H); margin-left: calc(var(--W) / -2); top: calc(var(--dvh) * 50 - var(--H) / 2 + var(--dvh) * 7);
-  }
-.env::before { content: ''; position: absolute; inset: 1% 1% 0; z-index: 0; border-radius: 3px; box-shadow: 0 calc(var(--W) * .05) calc(var(--W) * .12) rgba(74,55,43,.32), 0 2px 6px rgba(74,55,43,.18); transition: opacity .6s ease; }
-.env > * { position: absolute; }
-.env-in { inset: 0; z-index: 1; transition: opacity .7s ease; background: linear-gradient(180deg, #d9c8a4 0%, #e6d8b8 40%, #eadfc4 100%); box-shadow: inset 0 calc(var(--W) * .05) calc(var(--W) * .07) rgba(80,60,35,.28); }
-.env-pocket { inset: 0; width: 100%; height: 100%; z-index: 3; object-fit: fill; pointer-events: none; user-select: none; -webkit-user-drag: none; transition: opacity .7s ease;
-  clip-path: polygon(0 2.5%, 50% 53.17%, 100% 2.8%, 100% 100%, 0 100%); }
-
-/* flap: front = the envelope's own flap, back = its patterned lining; hinged on the top edge */
-.env-flap { inset: 0; z-index: 4; transform-origin: 50% 0; transform-style: preserve-3d; transform: perspective(calc(var(--W) * 3.2)) rotateX(0deg);
-  transition: transform 1.25s cubic-bezier(.5,.05,.25,1) .15s, opacity .7s ease; will-change: transform; }
-.flap-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-.flap-front { background: url('assets/opening/envelope.webp') 0 0 / 100% 100% no-repeat; clip-path: polygon(-3% 0, 103% 0, 50% 53.55%); }
-.flap-back { transform: rotateX(180deg); filter: drop-shadow(0 calc(var(--W) * .015) calc(var(--W) * .03) rgba(74,55,43,.3)); }
-.flap-lining { position: absolute; inset: 0; clip-path: polygon(-3% 100%, 103% 100%, 50% 46.45%);
-  background: linear-gradient(0deg, rgba(95,70,35,.28) 0%, rgba(95,70,35,0) 38%), url('assets/opening/wallpaper.webp') 50% 30% / 135% auto, #f2e6cb; background-blend-mode: normal, multiply, normal; }
+/* flap: the envelope's own flap, hinged on the top edge; it lifts a little toward the viewer and throws a warm shadow */
+.env-flap { inset: 0; transform-origin: 50% 0; transform: perspective(calc(var(--env-w) * 3.2)) rotateX(0deg); will-change: transform, filter;
+  filter: brightness(1) drop-shadow(0 0 0 rgba(176,108,52,0));
+  transition: transform 1.7s cubic-bezier(.45,.05,.3,1), filter 1.7s cubic-bezier(.45,.05,.3,1); }
+.flap-face { position: absolute; inset: 0; background: url('assets/opening/envelope.webp') 0 0 / 100% 100% no-repeat; clip-path: polygon(-55% 0, 156% 0, 49.23% 52.62%); }
 
 /* wax seal on the flap tip */
-.open-seal { position: absolute; left: 50%; top: 52.4%; width: calc(var(--W) * .27); aspect-ratio: 560 / 558; transform: translate(-50%, -50%); padding: 0; border: 0; background: none; cursor: pointer;
-  -webkit-tap-highlight-color: transparent; min-width: 56px; min-height: 56px; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-.seal { display: block; position: relative; width: 100%; height: 100%; filter: drop-shadow(0 calc(var(--W) * .014) calc(var(--W) * .02) rgba(60,40,22,.45));
-  transition: transform .3s ease; animation: seal-breathe 3.4s ease-in-out infinite; }
+.open-seal { position: absolute; left: 50.78%; top: 49.24%; width: 32.9%; aspect-ratio: 504 / 512; transform: translate(-50%, -50%); padding: 0; border: 0; background: none;
+  cursor: pointer; -webkit-tap-highlight-color: transparent; min-width: 56px; min-height: 56px; }
+.seal { display: block; width: 100%; height: 100%; filter: drop-shadow(0 calc(var(--sw) * .01) calc(var(--sw) * .016) rgba(60,40,22,.42)); transition: transform .3s ease, opacity .5s ease;
+  animation: seal-breathe 3.6s ease-in-out infinite; }
 .seal img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
-.open-seal::before { content: ''; position: absolute; inset: 6%; border-radius: 50%; border: 1px solid rgba(184,154,94,.9); animation: seal-ring 3.4s ease-out infinite; pointer-events: none; }
-.open-seal:hover .seal { transform: scale(1.05); }
-.open-seal:active .seal { transform: scale(.94); }
+.open-seal:hover .seal { transform: scale(1.04); }
+.open-seal:active .seal { transform: scale(.95); }
 .open-seal:focus-visible { outline: 2px solid var(--gold); outline-offset: 6px; border-radius: 50%; }
 .open-seal:disabled { cursor: default; }
-@keyframes seal-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.035); } }
-@keyframes seal-ring { 0% { transform: scale(.95); opacity: .75; } 70%,100% { transform: scale(1.5); opacity: 0; } }
+@keyframes seal-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.03); } }
 
-.seal-label { position: absolute; left: 0; right: 0; top: calc(var(--dvh) * 50 + var(--H) / 2 + var(--dvh) * 7 + var(--W) * .09); z-index: 4; text-align: center; margin: 0; pointer-events: none;
-  font-family: var(--serif-head); font-size: clamp(.58rem, calc(var(--W) * .031), .76rem); letter-spacing: .34em; text-indent: .34em; text-transform: uppercase; color: var(--brown); opacity: .85; text-shadow: 0 0 8px rgba(250,243,226,.95), 0 0 2px rgba(250,243,226,.9); transition: opacity .4s ease; }
+.seal-label { position: absolute; left: 0; right: 0; top: 75%; margin: 0; text-align: center; pointer-events: none;
+  font-family: var(--serif-head); font-size: clamp(.52rem, calc(var(--sw) * .0175), .7rem); letter-spacing: .34em; text-indent: .34em; text-transform: uppercase; color: var(--brown); opacity: .5; transition: opacity .4s ease; }
+
+/* pale rose-white wash that carries the envelope into the invitation */
+.op-wash { position: absolute; inset: 0; z-index: 8; opacity: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 42%, #fff8f7 0%, #fbeeee 55%, #f7e8e6 100%); transition: opacity .6s ease; }
 
 /* ---- sequence ---- */
 .is-unfolding .open-seal { pointer-events: none; }
-.is-unfolding .seal { animation: none; transform: scale(.93); }
-.is-unfolding .open-seal::before { animation: none; opacity: 0; }
-.is-unfolding .seal-label, .is-unfolding .op-kicker, .is-unfolding .op-names { opacity: 0; }
-.is-unfolding .env-flap { transform: perspective(calc(var(--W) * 3.2)) rotateX(180deg); }
-.is-expanding .env-in, .is-expanding .env-pocket, .is-expanding .env-flap, .is-expanding .env::before { opacity: 0; }
-.is-expanding .op-bg, .is-expanding .op-kicker, .is-expanding .op-names { opacity: 0; }
-.is-expanding .env { transform: translateY(calc(var(--H) * .06)); }
+.is-unfolding .seal { animation: none; }
+.is-unfolding .seal-label { opacity: 0; }
+.is-unfolding .env-flap { transform: perspective(calc(var(--env-w) * 3.2)) rotateX(17deg);
+  filter: brightness(1.06) saturate(1.05) drop-shadow(calc(var(--env-w) * .05) calc(var(--env-w) * .055) calc(var(--env-w) * .05) rgba(176,108,52,.7)); }
+.is-washing .op-wash { opacity: 1; }
+.is-washing .seal { opacity: 0; }
+
 
 /* ---------- Invitation shell ---------- */
 .invitation { position: relative; width: min(100%, 480px); margin: 0 auto; background-color: var(--ivory); overflow: hidden; overflow: clip; outline: 0;
@@ -113,15 +103,18 @@ p, h1, h2, ul { margin: 0; }
 .reveal.is-visible { opacity: 1; transform: none; }
 
 /* ---------- Hero ---------- */
+/* arrival order after the envelope: greenery -> table -> chandelier -> text */
+.hero .reveal { transition-delay: calc(var(--d, 0s) + 2.1s); }
+.hero .hero-table.reveal { transition-delay: 1.1s; }
 .hero { position: relative; }
 .hero-screen { --u: min(1vw, 4.8px, calc(100vh / 216)); position: relative; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 @supports (height: 100svh) { .hero-screen { height: 100svh; --u: min(1vw, 4.8px, calc(100svh / 216)); } }
 .hero-top { position: absolute; top: 0; left: 0; right: 0; height: calc(var(--u) * 42); overflow: hidden; pointer-events: none; }
-.hero-greenery { position: absolute; z-index: 2; top: calc(var(--u) * -.5); left: 0; width: 100%; transform: translate3d(0, var(--py, 0px), 0); animation: botanic-in 2.2s ease-out .2s both paused; }
+.hero-greenery { position: absolute; z-index: 2; top: calc(var(--u) * -.5); left: 0; width: 100%; transform: translate3d(0, var(--py, 0px), 0); animation: botanic-in 2.2s ease-out .5s both paused; }
 .is-open .hero-greenery, .is-open .hero-chandelier { animation-play-state: running; }
 .hero-chandelier img { filter: saturate(.85); }
 .hero-chandelier { position: absolute; z-index: 1; top: calc(var(--u) * -1); left: 50%; width: calc(var(--u) * 24); margin-left: calc(var(--u) * -12); transform-origin: 50% 0;
-  animation: botanic-in 2.4s ease-out .6s both paused, sway 3.2s ease-in-out 2.2s infinite alternate; }
+  animation: botanic-in 2.4s ease-out 1.7s both paused, sway 3.2s ease-in-out 4s infinite alternate; }
 @keyframes botanic-in { from { opacity: 0; transform: translate3d(0, calc(var(--u) * -6), 0); } to { opacity: 1; transform: translate3d(0, var(--py, 0px), 0); } }
 @keyframes sway { from { transform: rotate(-2.6deg); } to { transform: rotate(2.6deg); } }
 
@@ -149,11 +142,11 @@ p, h1, h2, ul { margin: 0; }
 .family-line .rel { font-family: var(--serif-head); font-size: .78em; letter-spacing: .2em; color: var(--brown); text-transform: uppercase; }
 .family-line--bride { margin-top: calc(var(--u) * 6); }
 .address { font-style: italic; font-size: calc(var(--u) * 3.8); color: var(--brown-soft); margin-top: calc(var(--u) * 1); }
-.hero-table { position: relative; z-index: 1; flex: 1 1 0; min-height: calc(var(--u) * 30); margin: calc(var(--u) * 3) calc(var(--u) * -6) 0; overflow: hidden; transform: translate3d(0, 0, 0); }
+/* table: scaled up and allowed to bleed off the bottom and sides, like the reference */
+.hero-table { position: relative; z-index: 1; flex: 1 1 0; min-height: calc(var(--u) * 30); margin: calc(var(--u) * 3) 0 0; overflow: hidden; transform: translate3d(0, 0, 0); }
 .hero-table.is-visible { transform: translate3d(0, var(--py, 0px), 0); }
-.hero-table img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; filter: saturate(.8) sepia(.1); opacity: .95; }
+.hero-table img { position: absolute; top: 2%; left: 50%; height: 122%; width: auto; max-width: none; transform: translateX(-50%); filter: saturate(.92); }
 .hero { padding-bottom: 0; scroll-snap-align: start; }
-.hero-table { -webkit-mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 94%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 94%, transparent); }
 
 /* ---------- Panels (date + venue) ---------- */
 .panel { position: relative; margin: 0 calc(var(--u) * 5) calc(var(--u) * 5); padding: calc(var(--u) * 17) calc(var(--u) * 7) calc(var(--u) * 17); text-align: center;
@@ -224,16 +217,13 @@ p, h1, h2, ul { margin: 0; }
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .env-flap, .env-in, .env-pocket, .op-bg, .seal, .opening, .reveal, .corner, .btn { transition-duration: .01s !important; transition-delay: 0s !important; animation: none !important; }
+  .env-flap, .op-wash, .seal, .seal, .opening, .reveal, .corner, .btn { transition-duration: .01s !important; transition-delay: 0s !important; animation: none !important; }
   .hero-greenery, .hero-chandelier { animation: none !important; opacity: 1; }
   .reveal { transform: none; }
 }
 
 /* ---------- Family page: arch frame ---------- */
 .family-page { position: relative; overflow: hidden; align-items: center; }
-.fp-leaves { position: absolute; left: 0; width: 100%; height: auto; pointer-events: none; opacity: .95; }
-.fp-leaves--top { top: 0; }
-.fp-leaves--bottom { bottom: 0; transform: scaleY(-1); }
 .family-page .family { width: 100%; padding: 0 calc(var(--u) * 8); }
 .arch { position: relative; width: 100%; margin: 0 auto; padding: calc(var(--u) * 34) calc(var(--u) * 3.5) calc(var(--u) * 22);
   border: 1px solid rgba(184,154,94,.6); border-radius: calc(var(--u) * 42) calc(var(--u) * 42) 0 0;

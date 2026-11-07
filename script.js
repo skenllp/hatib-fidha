@@ -83,8 +83,8 @@
       music.start();                       // inside the tap, so browsers allow playback
       if (reduced.matches) { finish(); return; }
       root.classList.add('is-unfolding');                          // flap hinges open
-      window.setTimeout(() => root.classList.add('is-expanding'), 1250); // envelope + backdrop melt away
-      window.setTimeout(finish, 1750);                                   // hero takes over
+      window.setTimeout(() => root.classList.add('is-washing'), 1500);  // seal fades, pale wash rises
+      window.setTimeout(finish, 2250);                                   // wash dissolves into the hero
     }, { once: true });
   }
 
