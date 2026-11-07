@@ -33,51 +33,70 @@ img { display: block; max-width: 100%; height: auto; }
 p, h1, h2, ul { margin: 0; }
 
 /* ---------- Opening envelope ---------- */
-/* The stage keeps the artwork's 941 x 1356 proportions and always fills the screen height; on a narrow phone the sides are cropped, on a
-   wide screen it sits centred as a column. Only the top flap moves — it hinges at the top edge and the wax seal travels with it. */
-.opening { --ar: calc(941 / 1356); --stage-h: 100vh; --stage-w: min(100vw, calc(var(--stage-h) * var(--ar))); --view-w: var(--stage-w);
-  position: fixed; inset: 0; z-index: 50; background: #efe1c7; overflow: hidden;
-  transition: opacity 1.1s ease .1s, visibility 0s linear 1.2s; }
-@supports (height: 100dvh) { .opening { --stage-h: 100dvh; } }
+/* Everything is sized from --W (the envelope width) so the envelope and seal stay in proportion on any screen.
+   The envelope artwork is 1217 x 1292; its flap tip sits at 50% / 53.2%. Only the flap moves. */
+.opening { --dvh: 1vh; --W: min(88vw, 440px, calc((var(--dvh) * 100 - 190px) * .84)); --H: calc(var(--W) * 1.0616);
+  position: fixed; inset: 0; z-index: 50; overflow: hidden; background: #f3e9d4;
+  transition: opacity 1.2s ease, visibility 0s linear 1.2s; }
+@supports (height: 100dvh) { .opening { --dvh: 1dvh; } }
 .opening[hidden] { display: none; }
 .is-open .opening { opacity: 0; visibility: hidden; pointer-events: none; }
 
-.opening-stage { position: absolute; top: 0; left: 50%; width: var(--stage-w); height: var(--stage-h); margin-left: calc(var(--stage-w) / -2);
-  perspective: calc(var(--stage-w) * 6); perspective-origin: 50% 8%; overflow: hidden; }
-@media (min-width: 700px) { .opening-stage { box-shadow: 0 0 70px rgba(74,55,43,.16); } }
+/* leaf watercolour backdrop */
+.op-bg { position: absolute; inset: 0; background: #f6ecd6 url('assets/opening/wallpaper.webp') center / cover no-repeat; transition: opacity .9s ease; }
+.op-bg::after { content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 46%, rgba(255,250,238,.5) 0%, rgba(255,250,238,0) 62%), radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(120,98,60,.16) 100%); }
 
-.env-open, .env-shadow, .env-flap, .env-flap-img { position: absolute; inset: 0; width: 100%; height: 100%; }
-.env-open, .env-shadow, .env-flap-img { object-fit: fill; pointer-events: none; user-select: none; -webkit-user-drag: none; }
-.env-shadow { opacity: 0; transition: opacity 1.2s ease .25s; }
-.env-flap { z-index: 3; transform-origin: 50% 0; will-change: transform; backface-visibility: hidden;
-  transition: transform 1.5s cubic-bezier(.45,.02,.2,1) .12s, filter 1.4s ease .12s; }
+/* heading above the envelope */
+.op-kicker, .op-names { position: absolute; left: 0; right: 0; text-align: center; margin: 0; pointer-events: none; transition: opacity .6s ease, transform .8s ease; }
+.op-kicker { top: calc(var(--dvh) * 50 - var(--H) / 2 + var(--dvh) * 7 - var(--W) * .30); font-family: var(--serif-head); font-size: clamp(.6rem, calc(var(--W) * .034), .8rem); letter-spacing: .38em; text-indent: .38em; text-transform: uppercase; color: var(--brown-soft); }
+.op-names { top: calc(var(--dvh) * 50 - var(--H) / 2 + var(--dvh) * 7 - var(--W) * .25); font-family: var(--serif-names); font-style: italic; font-weight: 500; font-size: calc(var(--W) * .115); line-height: 1.1; color: var(--brown); }
+.op-names span { color: var(--gold); font-style: normal; margin: 0 .08em; }
 
-/* wax seal, sitting on the flap's tip */
-.open-seal { position: absolute; z-index: 2; left: 50%; top: 59.4%; width: calc(var(--view-w) * .25); aspect-ratio: 420 / 489; transform: translate(-50%, -50%);
-  padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; min-width: 48px; min-height: 48px; }
-.seal { display: block; width: 100%; height: 100%; filter: drop-shadow(0 .6vmin 1vmin rgba(74,55,43,.34)); transition: transform .3s ease, opacity .45s ease 1.3s;
-  animation: seal-breathe 3.6s ease-in-out infinite; }
+/* envelope */
+.env { position: absolute; left: 50%; width: var(--W); height: var(--H); margin-left: calc(var(--W) / -2); top: calc(var(--dvh) * 50 - var(--H) / 2 + var(--dvh) * 7);
+  }
+.env::before { content: ''; position: absolute; inset: 1% 1% 0; z-index: 0; border-radius: 3px; box-shadow: 0 calc(var(--W) * .05) calc(var(--W) * .12) rgba(74,55,43,.32), 0 2px 6px rgba(74,55,43,.18); transition: opacity .6s ease; }
+.env > * { position: absolute; }
+.env-in { inset: 0; z-index: 1; transition: opacity .7s ease; background: linear-gradient(180deg, #d9c8a4 0%, #e6d8b8 40%, #eadfc4 100%); box-shadow: inset 0 calc(var(--W) * .05) calc(var(--W) * .07) rgba(80,60,35,.28); }
+.env-pocket { inset: 0; width: 100%; height: 100%; z-index: 3; object-fit: fill; pointer-events: none; user-select: none; -webkit-user-drag: none; transition: opacity .7s ease;
+  clip-path: polygon(0 2.5%, 50% 53.17%, 100% 2.8%, 100% 100%, 0 100%); }
+
+/* flap: front = the envelope's own flap, back = its patterned lining; hinged on the top edge */
+.env-flap { inset: 0; z-index: 4; transform-origin: 50% 0; transform-style: preserve-3d; transform: perspective(calc(var(--W) * 3.2)) rotateX(0deg);
+  transition: transform 1.25s cubic-bezier(.5,.05,.25,1) .15s, opacity .7s ease; will-change: transform; }
+.flap-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.flap-front { background: url('assets/opening/envelope.webp') 0 0 / 100% 100% no-repeat; clip-path: polygon(-3% 0, 103% 0, 50% 53.55%); }
+.flap-back { transform: rotateX(180deg); filter: drop-shadow(0 calc(var(--W) * .015) calc(var(--W) * .03) rgba(74,55,43,.3)); }
+.flap-lining { position: absolute; inset: 0; clip-path: polygon(-3% 100%, 103% 100%, 50% 46.45%);
+  background: linear-gradient(0deg, rgba(95,70,35,.28) 0%, rgba(95,70,35,0) 38%), url('assets/opening/wallpaper.webp') 50% 30% / 135% auto, #f2e6cb; background-blend-mode: normal, multiply, normal; }
+
+/* wax seal on the flap tip */
+.open-seal { position: absolute; left: 50%; top: 52.4%; width: calc(var(--W) * .27); aspect-ratio: 560 / 558; transform: translate(-50%, -50%); padding: 0; border: 0; background: none; cursor: pointer;
+  -webkit-tap-highlight-color: transparent; min-width: 56px; min-height: 56px; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.seal { display: block; position: relative; width: 100%; height: 100%; filter: drop-shadow(0 calc(var(--W) * .014) calc(var(--W) * .02) rgba(60,40,22,.45));
+  transition: transform .3s ease; animation: seal-breathe 3.4s ease-in-out infinite; }
 .seal img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
-.open-seal:hover .seal { transform: scale(1.04); }
-.open-seal:active .seal { transform: scale(.96); }
+.open-seal::before { content: ''; position: absolute; inset: 6%; border-radius: 50%; border: 1px solid rgba(184,154,94,.9); animation: seal-ring 3.4s ease-out infinite; pointer-events: none; }
+.open-seal:hover .seal { transform: scale(1.05); }
+.open-seal:active .seal { transform: scale(.94); }
 .open-seal:focus-visible { outline: 2px solid var(--gold); outline-offset: 6px; border-radius: 50%; }
 .open-seal:disabled { cursor: default; }
-@keyframes seal-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+@keyframes seal-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.035); } }
+@keyframes seal-ring { 0% { transform: scale(.95); opacity: .75; } 70%,100% { transform: scale(1.5); opacity: 0; } }
 
-.seal-label { position: absolute; left: 0; right: 0; bottom: calc(9% + var(--safe-b)); z-index: 4; text-align: center; pointer-events: none;
-  font-family: var(--serif-head); font-size: clamp(.58rem, calc(var(--view-w) * .019), .76rem); letter-spacing: .34em; text-indent: .34em; color: var(--brown); opacity: .62;
-  transition: opacity .4s ease; }
+.seal-label { position: absolute; left: 0; right: 0; top: calc(var(--dvh) * 50 + var(--H) / 2 + var(--dvh) * 7 + var(--W) * .09); z-index: 4; text-align: center; margin: 0; pointer-events: none;
+  font-family: var(--serif-head); font-size: clamp(.58rem, calc(var(--W) * .031), .76rem); letter-spacing: .34em; text-indent: .34em; text-transform: uppercase; color: var(--brown); opacity: .85; text-shadow: 0 0 8px rgba(250,243,226,.95), 0 0 2px rgba(250,243,226,.9); transition: opacity .4s ease; }
 
-/* pale rose-white wash that carries the envelope into the invitation */
-.opening-wash { position: absolute; inset: 0; z-index: 8; opacity: 0; pointer-events: none;
-  background: radial-gradient(ellipse at 50% 40%, #fffdf8 0%, #f9f1e6 55%, #f4eadb 100%); transition: opacity .9s ease 1.1s; }
-
+/* ---- sequence ---- */
 .is-unfolding .open-seal { pointer-events: none; }
-.is-unfolding .seal { animation: none; opacity: .0; }
-.is-unfolding .seal-label { opacity: 0; }
-.is-unfolding .env-flap { transform: rotateX(67deg); filter: brightness(1.05) saturate(1.04); }
-.is-unfolding .env-shadow { opacity: .75; }
-.is-unfolding .opening-wash { opacity: 1; }
+.is-unfolding .seal { animation: none; transform: scale(.93); }
+.is-unfolding .open-seal::before { animation: none; opacity: 0; }
+.is-unfolding .seal-label, .is-unfolding .op-kicker, .is-unfolding .op-names { opacity: 0; }
+.is-unfolding .env-flap { transform: perspective(calc(var(--W) * 3.2)) rotateX(180deg); }
+.is-expanding .env-in, .is-expanding .env-pocket, .is-expanding .env-flap, .is-expanding .env::before { opacity: 0; }
+.is-expanding .op-bg, .is-expanding .op-kicker, .is-expanding .op-names { opacity: 0; }
+.is-expanding .env { transform: translateY(calc(var(--H) * .06)); }
 
 /* ---------- Invitation shell ---------- */
 .invitation { position: relative; width: min(100%, 480px); margin: 0 auto; background-color: var(--ivory); overflow: hidden; overflow: clip; outline: 0;
@@ -205,7 +224,7 @@ p, h1, h2, ul { margin: 0; }
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .env-flap, .env-shadow, .opening-wash, .seal, .opening, .reveal, .corner, .btn { transition-duration: .01s !important; transition-delay: 0s !important; animation: none !important; }
+  .env-flap, .env-in, .env-pocket, .op-bg, .seal, .opening, .reveal, .corner, .btn { transition-duration: .01s !important; transition-delay: 0s !important; animation: none !important; }
   .hero-greenery, .hero-chandelier { animation: none !important; opacity: 1; }
   .reveal { transform: none; }
 }

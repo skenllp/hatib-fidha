@@ -26,9 +26,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 
-  <link rel="preload" as="image" href="assets/envelope/envelope-open.jpg" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/envelope/envelope-flap.webp" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/envelope/wax-seal.webp">
+  <link rel="preload" as="image" href="assets/opening/wallpaper.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/opening/envelope.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/opening/seal.webp">
   <link rel="stylesheet" href="style.css">
 
   <noscript>
@@ -42,21 +42,29 @@
 <body>
 
   <!-- ============ OPENING ENVELOPE ============ -->
-  <!-- Layers, bottom to top: envelope body (with its inner lining) -> cast shadow -> top flap (carries the wax seal) -> pale wash.
-       Only the top flap moves; the seal rides up with it. -->
+  <!-- Sequence: tap the wax seal -> the flap hinges open (its inner lining shows) -> the opening dissolves straight into the invitation hero.
+       Layers inside .env, bottom to top: interior -> pocket (envelope with the flap cut out) -> flap (front + lining + seal). -->
   <section class="opening" id="opening" aria-label="Invitation envelope">
-    <div class="opening-stage">
-      <img class="env-open" src="assets/envelope/envelope-open.jpg" alt="" width="941" height="1356" fetchpriority="high" decoding="async">
-      <img class="env-shadow" src="assets/envelope/flap-shadow.webp" alt="" width="470" height="678" decoding="async">
-      <div class="env-flap">
-        <img class="env-flap-img" src="assets/envelope/envelope-flap.webp" alt="" width="941" height="1356" fetchpriority="high" decoding="async">
+    <div class="op-bg" aria-hidden="true"></div>
+    <p class="op-kicker" aria-hidden="true">The Nikkah of</p>
+    <p class="op-names" aria-hidden="true">Hatib <span>&amp;</span> Fidha</p>
+
+    <div class="env" id="env">
+      <div class="env-in" aria-hidden="true"></div>
+
+
+      <img class="env-pocket" src="assets/opening/envelope.webp" alt="" width="1217" height="1292" fetchpriority="high" decoding="async">
+
+      <div class="env-flap" id="flap">
+        <div class="flap-face flap-front"></div>
+        <div class="flap-face flap-back"><div class="flap-lining"></div></div>
         <button type="button" class="open-seal" id="open-btn" aria-label="Open the Nikkah invitation">
-          <span class="seal" aria-hidden="true"><img src="assets/envelope/wax-seal.webp" alt="" width="420" height="489"></span>
+          <span class="seal" aria-hidden="true"><img src="assets/opening/seal.webp" alt="" width="560" height="558"></span>
         </button>
       </div>
-      <p class="seal-label" aria-hidden="true">TAP THE SEAL TO OPEN</p>
     </div>
-    <div class="opening-wash" aria-hidden="true"></div>
+
+    <p class="seal-label" aria-hidden="true">Tap the seal to open</p>
   </section>
 
   <!-- ============ INVITATION ============ -->

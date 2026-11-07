@@ -82,8 +82,9 @@
       seal.disabled = true;
       music.start();                       // inside the tap, so browsers allow playback
       if (reduced.matches) { finish(); return; }
-      root.classList.add('is-unfolding');
-      window.setTimeout(finish, 2100);
+      root.classList.add('is-unfolding');                          // flap hinges open
+      window.setTimeout(() => root.classList.add('is-expanding'), 1250); // envelope + backdrop melt away
+      window.setTimeout(finish, 1750);                                   // hero takes over
     }, { once: true });
   }
 
