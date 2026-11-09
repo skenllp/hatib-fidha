@@ -301,3 +301,5 @@ p, h1, h2, ul { margin: 0; }
 .blessings-list li + li { margin-top: calc(var(--u) * 4); }
 .closing .blessings-list li { font-size: calc(var(--u) * 5.2); }
 .closing .blessings .eyebrow { font-size: calc(var(--u) * 2.9); letter-spacing: .22em; text-indent: .22em; white-space: nowrap; }
+.family-page .couple { display: block; margin-top: calc(var(--u) * 1.6); }
+.family-page .family-line--bride .couple:first-of-type { margin-top: calc(var(--u) * 2); }
