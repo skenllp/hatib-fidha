@@ -298,3 +298,6 @@ p, h1, h2, ul { margin: 0; }
 .arch-duo .cd-unit { border-color: rgba(230,217,178,.65); background: rgba(246,239,220,.1); }
 .arch-duo img[src$=".svg"] { filter: brightness(1.3) saturate(.9); }
 .arch-duo .family-line, .arch-duo .weekday, .arch-duo .date, .arch-duo .time, .arch-duo .eyebrow { text-shadow: 0 1px 8px rgba(30,34,8,.28); }
+.blessings-list li + li { margin-top: calc(var(--u) * 4); }
+.closing .blessings-list li { font-size: calc(var(--u) * 5.2); }
+.closing .blessings .eyebrow { font-size: calc(var(--u) * 2.9); letter-spacing: .22em; text-indent: .22em; white-space: nowrap; }
