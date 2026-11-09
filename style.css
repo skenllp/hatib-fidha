@@ -127,8 +127,7 @@ p, h1, h2, ul { margin: 0; }
 .hosts-names { font-family: var(--serif-names); font-weight: 500; font-size: calc(var(--u) * 5.6); line-height: 1.25; color: var(--brown); }
 .amp-s { font-style: italic; color: var(--gold); padding: 0 .08em; }
 .hosts-place { font-style: italic; font-size: calc(var(--u) * 3.6); margin-top: calc(var(--u) * .6); color: var(--brown-soft); }
-.invite { margin-top: calc(var(--u) * 5); font-size: calc(var(--u) * 3.6); line-height: 1.4; color: var(--brown-soft); max-width: 78%; margin-inline: auto; padding-top: calc(var(--u) * 5);
-  background: linear-gradient(var(--gold-soft), var(--gold-soft)) top center / calc(var(--u) * 12) 1px no-repeat; }
+.invite { margin-top: calc(var(--u) * 5); font-size: calc(var(--u) * 3.6); line-height: 1.4; color: var(--brown-soft); max-width: 78%; margin-inline: auto; }
 .names { margin-top: calc(var(--u) * 2.5); font-family: var(--serif-names); font-weight: 500; color: var(--brown); display: flex; flex-direction: column; align-items: center; }
 .name { display: block; font-style: italic; font-size: calc(var(--u) * 10.4); line-height: 1.08; letter-spacing: .005em; font-kerning: normal; white-space: nowrap; }
 .amp { display: block; font-family: var(--serif-names); font-style: italic; font-weight: 400; font-size: calc(var(--u) * 6); color: var(--gold); line-height: 1.3; }
