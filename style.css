@@ -1,5 +1,5 @@
 /* ==========================================================
-   Hatib & Fidha — Nikkah Invitation
+   Fidha & Hatib — Nikkah Invitation
    Ivory paper · sage botanicals · antique gold
    ========================================================== */
 :root {
@@ -261,10 +261,40 @@ p, h1, h2, ul { margin: 0; }
 .closing { position: relative; overflow: hidden; padding: calc(var(--u) * 24) calc(var(--u) * 9) calc(var(--u) * 44); }
 .closing > .blessings, .closing > .divider, .closing > .quote, .closing > .regards, .closing > .families { position: relative; z-index: 1; }
 .closing-crescent { width: calc(var(--u) * 13); margin: 0 auto calc(var(--u) * 6); }
-.closing-aisle { position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--u) * 46); z-index: 0; pointer-events: none;
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 38%); mask-image: linear-gradient(to bottom, transparent, #000 38%); }
-.closing-aisle img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; filter: saturate(.8) sepia(.1); opacity: .95; }
 .closing .divider { margin-top: calc(var(--u) * 7); }
 .closing .quote { margin-top: calc(var(--u) * 6); }
 .closing .regards { margin-top: calc(var(--u) * 9); }
 .closing .divider--end { margin-top: calc(var(--u) * 7); }
+
+.closing-aisle { position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--u) * 46); z-index: 0; pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 38%); mask-image: linear-gradient(to bottom, transparent, #000 38%); }
+.closing-aisle img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; filter: saturate(.8) sepia(.1); opacity: .95; }
+
+/* ---------- Pages 2 + 3: one continuous olive arch (family + date) ---------- */
+.arch-duo { --paper: #f6efdc; --paper-soft: rgba(246,239,220,.86); --trim: #e6d9b2;
+  position: relative; margin: calc(var(--u) * 5); isolation: isolate; overflow: hidden; color: var(--paper);
+  background: linear-gradient(rgba(36,40,12,.2), rgba(36,40,12,.2)), #707433 url('assets/art/olive-texture.webp') center / cover no-repeat;
+  border-radius: calc(var(--u) * 45) calc(var(--u) * 45) calc(var(--u) * 5) calc(var(--u) * 5);
+  box-shadow: 0 calc(var(--u) * 3) calc(var(--u) * 8) rgba(58,60,24,.28), inset 0 0 calc(var(--u) * 12) rgba(30,34,8,.3); }
+.arch-duo::before { content: ""; position: absolute; inset: calc(var(--u) * 2); z-index: 0; pointer-events: none; opacity: .5;
+  border: 1px solid var(--trim); border-radius: calc(var(--u) * 43) calc(var(--u) * 43) calc(var(--u) * 3) calc(var(--u) * 3); }
+.arch-duo > .page { position: relative; z-index: 1; padding: 0; }
+.arch-duo .family { padding: 0 calc(var(--u) * 4); }
+/* strip the individual frames so both pages share the one background */
+.arch-duo .arch, .arch-duo .panel { background: none; border: 0; outline: 0; border-radius: 0; box-shadow: none; margin: 0; }
+.arch-duo .arch::before, .arch-duo .panel::before, .arch-duo .panel::after, .arch-duo .corner { display: none; }
+.arch-duo .arch { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: calc(var(--u) * 30) calc(var(--u) * 6) calc(var(--u) * 10); }
+.arch-duo .arch .arch-crescent { top: calc(var(--u) * 14); }
+.arch-duo .panel { padding: calc(var(--u) * 10) calc(var(--u) * 8) calc(var(--u) * 20); }
+.arch-duo .family-page, .arch-duo .page:has(> .panel) { min-height: 100svh; }
+@supports not (height: 100svh) { .arch-duo .arch, .arch-duo .family-page, .arch-duo .page:has(> .panel) { min-height: 100vh; } }
+
+/* cream type on olive */
+.arch-duo .family-line, .arch-duo .address, .arch-duo .weekday, .arch-duo .after-asr { color: var(--paper-soft); }
+.arch-duo .family-line { font-size: calc(var(--u) * 4.1); }
+.arch-duo .address { font-size: calc(var(--u) * 4.1); }
+.arch-duo .family-line .rel, .arch-duo .date, .arch-duo .time, .arch-duo .cd-num { color: var(--paper); }
+.arch-duo .eyebrow, .arch-duo .cd-label, .arch-duo .amp-s { color: var(--trim); }
+.arch-duo .cd-unit { border-color: rgba(230,217,178,.65); background: rgba(246,239,220,.1); }
+.arch-duo img[src$=".svg"] { filter: brightness(1.3) saturate(.9); }
+.arch-duo .family-line, .arch-duo .weekday, .arch-duo .date, .arch-duo .time, .arch-duo .eyebrow { text-shadow: 0 1px 8px rgba(30,34,8,.28); }

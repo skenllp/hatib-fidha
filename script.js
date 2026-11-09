@@ -1,5 +1,5 @@
 /* ==========================================================
-   Hatib & Fidha — Nikkah Invitation
+   Fidha & Hatib — Nikkah Invitation
    Envelope opening · music · countdown · calendar · reveals
    ========================================================== */
 (() => {
@@ -11,9 +11,9 @@
     // The end time was NOT supplied. This placeholder only gives the calendar entry a length —
     // change it when the family confirms the programme.
     eventEnd: '2026-12-29T17:00:00+05:30',
-    title: 'Nikkah of Hatib Muhammed & Fidha Shameer',
+    title: 'Nikkah of Fidha Shameer & Hatib Muhammed',
     location: 'Babil Greens, Taliparamba, Kerala',
-    description: 'Nikkah ceremony of Hatib Muhammed & Fidha Shameer, after Asr prayer. Directions: https://www.google.com/maps/search/?api=1&query=Babil+Greens+Taliparamba',
+    description: 'Nikkah ceremony of Fidha Shameer & Hatib Muhammed, after Asr prayer. Directions: https://www.google.com/maps/search/?api=1&query=Babil+Greens+Taliparamba',
     musicVolume: 0.45,
   };
 
